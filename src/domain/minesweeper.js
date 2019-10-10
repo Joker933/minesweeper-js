@@ -17,6 +17,15 @@ export class Minesweeper {
             this.bombs = this._calculateDefaultBombs();
         else
             this.bombs = bombs;
+
+        this.c = [];
+        for(let i = 0; i < rows; i++) {
+            let g = [];
+           for(let j = 0; j < columns; j++){
+               g.push(field.hidden);
+           }
+           this.c.push(g);
+        }
     }
 
     /**
@@ -27,6 +36,8 @@ export class Minesweeper {
      * @return {number} amount of bombs
      */
     _calculateDefaultBombs() {
+        
+
         return 10;
     }
 
@@ -39,7 +50,7 @@ export class Minesweeper {
      * @return {field}
      */
     getField(x, y) {
-        return field.hidden;
+        return this.c[x][y];
     }
 
     /**
@@ -72,6 +83,7 @@ export class Minesweeper {
      * @param {number} y
      */
     reveal(x, y) {
+        this.c[y][x] = field.visible;
 
     }
 
@@ -82,6 +94,14 @@ export class Minesweeper {
      * @param {number} y
      */
     toggleFieldState(x, y) {
+
+        if(this.c[y][x] === field.hidden){
+            this.c[y][x] = field.flag;
+        } else if(this.c[y][x] === field.flag) {
+            this.c[y][x] = field.question_mark;
+        } else {
+            this.c[y][x] = field.hidden;
+        }
     }
 
     /**
@@ -107,7 +127,7 @@ export class Minesweeper {
      * @return {number}
      */
     getRemainingBombCount() {
-        return -1;
+        return this.bombs;
     }
 
 }
